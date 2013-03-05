@@ -16,14 +16,15 @@ class FileScraper(object):
 class GameDetailsScraper(FileScraper):
 
     timezones = {
-    "MST": -7*3600,
-    "MDT": -6*3600,
-    "PST": -8*3600,
-    "PDT": -7*3600,
-    "CST": -6*3600,
-    "CDT": -5*3600,
-    "EDT": -4*3600,
-    "EST": -5*3600}
+        "PST": -8*3600,
+        "PDT": -7*3600,
+        "MST": -7*3600,
+        "MDT": -6*3600,
+        "CST": -6*3600,
+        "CDT": -5*3600,
+        "EDT": -4*3600,
+        "EST": -5*3600
+    }
 
     frenchTeams = ['MONTREAL CANADIENS',
                    'CANADIENS MONTREAL',
@@ -186,7 +187,7 @@ class PlayByPlayScraper(GameDetailsScraper):
 
 
 def main():
-    import pprint, sys, json
+    import sys, json
     playByPlay = PlayByPlayScraper('../data/%s/%s.HTM' % (sys.argv[1], sys.argv[2]))
     print json.dumps(playByPlay.scrape(), default=Data.JsonHandler)
 

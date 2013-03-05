@@ -10,17 +10,17 @@ app = Flask(__name__)
 
 @app.route("/pbp/<int:season>/<int:gameid>")
 def pbp(season,gameid):
-    showJS = True
     try:
         dataFile = PlayByPlayFile('data', season, gameid).ensureData()
         playByPlay = PlayByPlayScraper(dataFile)
         js = json.dumps(playByPlay.scrape(), default=JsonHandler)
     except HTTPError as e:
-        showJS = False
-        resp = Response('Unavailable', status=e.code)
+        abort(e.code)
 
-    if showJS:
-        resp = Response(js, status=200, mimetype='application/json')
+    #TODO
+    #The response never changes
+    #Cache this, or at least set some cache-control headers!!
+    resp = Response(js, status=200, mimetype='application/json')
 
     return resp
 

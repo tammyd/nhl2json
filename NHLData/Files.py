@@ -1,10 +1,8 @@
-from urllib import urlretrieve
 import os, errno
 import urllib2
 
 class PlayByPlayFile(object):
 
-    DIRECTORY = 'data/'
     HOST = "http://www.nhl.com/scores/htmlreports/"
     PREFIX = 'PL02'
 
@@ -32,30 +30,23 @@ class PlayByPlayFile(object):
 
         path = os.path.dirname(filename)
         if not os.path.exists(path):
+            # try and create the directory - python equiv of mkdir -p
             try:
                 os.makedirs(path)
-            except OSError as exc: # Python >2.5
+            except OSError as exc:
                 if exc.errno == errno.EEXIST and os.path.isdir(path):
                     pass
                 else: raise
 
+        # download and save url contents
         f = urllib2.urlopen(url)
         with open(filename, "wb") as html:
             html.write(f.read())
+
+        #TODO: These files are huge - we should gzip them or something
+
         return filename
 
-        # urlretrieve(url, filename)
-        # return filename
-
-
-
-
-
-if __name__ == "__main__":
-    import sys
-
-    o = PlayByPlayFile('../data', '20112012', int(sys.argv[1]))
-    print o.ensureData()
 
 
 
